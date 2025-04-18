@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"<Unnamed>","l":"DatabaseLoginGUI"},{"p":"<Unnamed>","l":"DatabaseManager"},{"p":"<Unnamed>","l":"Hike"},{"p":"<Unnamed>","l":"HikeManager"},{"p":"<Unnamed>","l":"HikeManagerTest"},{"p":"<Unnamed>","l":"HikeTrackingSystem"},{"p":"<Unnamed>","l":"UIController"}];updateSearchResults();
