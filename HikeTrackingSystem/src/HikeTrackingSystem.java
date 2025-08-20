@@ -16,7 +16,7 @@ public class HikeTrackingSystem {
 
     public static void main(String[] args){
 
-        UIController.handleUserInput();
+        UIController.startMainMenu();
 
     }
 

@@ -8,6 +8,9 @@
  * */
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Scanner;
 
 public class UIController {
@@ -35,13 +38,14 @@ public class UIController {
      *  Return: void
      *  Purpose: Handles the functionality of the main menu with the use of a switch statement
      * */
-    public static void handleUserInput() {
+    public static void startMainMenu() {
 
         HikeManager hikeManager = new HikeManager();
 
         System.out.println("\nWelcome to the hike tracking system!");
+        Scanner scanner = new Scanner(System.in);
+
         while (true) {
-            Scanner scanner = new Scanner(System.in);
 
             displayMenu();
 
@@ -58,8 +62,9 @@ public class UIController {
                     break;
 
                 case "2":
-
-                    hikeManager.addHike();
+                    //Creates a new Hike object, and it gets passed into addHike()
+                    Hike hike = new Hike();
+                    hikeManager.addHike(hike);
                     break;
 
                 case "3":
@@ -68,8 +73,11 @@ public class UIController {
                     break;
 
                 case "4":
-
-                    hikeManager.removeHike();
+                    System.out.println("\n" + hikeManager.getAllHikes(hikeManager.hikeList));
+                    System.out.println("Enter the name of the hike you want to remove");
+                    String hikeToRemove = scanner.nextLine().toLowerCase();
+                    //the name of the hike the user wants to remove gets passed into removeHike()
+                    hikeManager.removeHike(hikeToRemove);
                     break;
 
                 case "5":
@@ -90,5 +98,7 @@ public class UIController {
             }
         }
     }
+
+
 }
 

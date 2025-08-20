@@ -26,91 +26,12 @@ public class HikeManager {
     Scanner scanner = new Scanner(System.in);
 
     /* Method: addHike
-     *  Parameters: none
+     *  Parameters: hike with type of Hike
      *  Return: boolean
-     *  Purpose: Allows the user to manually enter hike data. It then creates a new Hike
-     * object and adds it to the hikeList ArrayList
+     *  Purpose: Allows the user to manually enter hike data. When a new hike is created it gets added
+     * to the hikeList ArrayList
      * */
-    public boolean addHike() {
-        //Creating a new Hike object
-        Hike hike = new Hike();
-        System.out.println("Enter the name of the hike.");
-        String hikeName = scanner.nextLine().trim();
-        //Loop makes sure that the user can't enter an empty string or just a space
-        while (hikeName == null || hikeName.isEmpty() || (hikeName.charAt(0) + "").equals(" ")) {
-            System.out.println("Invalid input!\n" + "Enter the name of the hike.");
-            hikeName = scanner.nextLine().trim();
-        }
-        hike.setName(hikeName);
-
-        System.out.println("Enter the location of the hike.");
-        String hikeLocation = scanner.nextLine().trim();
-        //Loop makes sure that the user can't enter an empty string or just a space
-        while (hikeLocation == null || hikeLocation.isEmpty() || (hikeLocation.charAt(0) + "").equals(" ")) {
-            System.out.println("Invalid input!\n" + "Enter the location of the hike.");
-            hikeLocation = scanner.nextLine().trim();
-        }
-        hike.setLocation(hikeLocation);
-
-        //Loop will always run if the user enters incorrect data
-        while (true) {
-            try {
-                System.out.println("Enter how many miles the hike was.");
-                double hikeDistance = scanner.nextDouble();
-
-                //Makes sure the user can't enter a distance less than or equal to 0
-                while (hikeDistance <= 0) {
-                    System.out.println("You must enter a positive number.\n" + "Enter the hike's distance");
-                    hikeDistance = scanner.nextDouble();
-                }
-                hike.setDistance(hikeDistance);
-                break;
-            } catch (Exception e) {
-                System.out.println("You must enter a valid positive number!");
-                scanner.nextLine(); //takes care of the extra new line character that nextDouble misses
-            }
-        }
-        scanner.nextLine(); //takes care of the extra new line character that nextDouble misses
-
-        System.out.println("Enter the duration of the hike.");
-        String hikeDuration = scanner.nextLine().trim();
-        //Loop makes sure that the user can't enter an empty string or just a space
-        while (hikeDuration == null || hikeDuration.isEmpty() || (hikeDuration.charAt(0) + "").equals(" ")) {
-            System.out.println("Invalid input!\n" + "Enter the duration of the hike.");
-            hikeDuration = scanner.nextLine().trim();
-        }
-        hike.setDuration(hikeDuration);
-
-        //Loop will always run if the user enters incorrect data
-        while (true) {
-            try {
-                System.out.println("Enter the elevation of the hike.");
-                int hikeElevation = scanner.nextInt();
-
-                //Makes sure the user can't enter an elevation less than 0
-                while (hikeElevation < 0) {
-                    System.out.println("Elevation cannot be negative.\n" + "Enter the hike's elevation");
-                    hikeElevation = scanner.nextInt();
-                }
-                hike.setElevation(hikeElevation);
-                break;
-            } catch (Exception e) {
-                System.out.println("You must enter a valid number!");
-                scanner.nextLine(); //takes care of the extra new line character that nextInt misses
-            }
-        }
-        scanner.nextLine(); //takes care of the extra new line character that nextInt misses
-
-
-        System.out.println("Enter the difficulty level of the hike.");
-        String hikeDiffLvl = scanner.nextLine().trim();
-        //Loop makes sure that the user can't enter an empty string or just a space
-        while (hikeDiffLvl == null || hikeDiffLvl.isEmpty() || (hikeDiffLvl.charAt(0) + "").equals(" ")) {
-            System.out.println("Invalid input!\n" + "Enter the difficulty level of the hike.");
-            hikeDiffLvl = scanner.nextLine().trim();
-        }
-        hike.setDifficultyLevel(hikeDiffLvl);
-
+    public boolean addHike(Hike hike) {
         System.out.println("\n'" + hike.getName() + "' was added to the system.");
         System.out.println(hike);
         // returns true if the hike is added to 'hikeList'
@@ -119,7 +40,7 @@ public class HikeManager {
 
 
     /* Method: addHikeFromTextFile
-     *  Parameters: String filePath
+     *  Parameters: filePath with type String
      *  Return: boolean
      *  Purpose: Allows the user to add hikes from a text file. If there are any incorrect
      * hike details it tells the user what the problem was and then does not add the incorrect
@@ -197,23 +118,18 @@ public class HikeManager {
             String hikeToUpdate = scanner.nextLine().toLowerCase();
 
             //Creates a new blank hike named 'update'
-            Hike update = new Hike();
-
-            //Acts as a flag to indicate whether the hike exists.
-            boolean exists = false;
+            Hike update = null;
 
             for (Hike hike : hikeList) {
-                if (hike.getName().toLowerCase().equals(hikeToUpdate)) {
-                    //If the hike exists then the flag is changed and the hike is assigned to the new 'update' object
-                    exists = true;
+                if (hike.getName().equalsIgnoreCase(hikeToUpdate)) {
+                    //If the hike exists the hike is assigned to the blank 'update' object
                     update = hike;
                     break;
                 }
             }
 
-
             //If the hike exists then the update menu is displayed
-            if (exists) {
+            if (update != null) {
                 System.out.println("\nHere are the details of the hike. " + update);
                 System.out.println("What about hike: '" + hikeToUpdate + "' would you like to update?");
                 System.out.println(
@@ -339,41 +255,37 @@ public class HikeManager {
 
 
     /* Method: removeHike
-     *  Parameters: none
+     *  Parameters: hikeToRemove with type String
      *  Return: boolean
      *  Purpose: Allows the user to remove hikes using the hike's name. First is prints out all the hikes.
      * Then it checks if the hike exists and if it does exist it removes it from 'hikeList'
      * */
-    public boolean removeHike() {
+    public boolean removeHike(String hikeToRemove) {
         if (hikeList.isEmpty()) {
             System.out.println("\nThere are no hikes currently in the system.\n");
             return false;
         }
-        //Acts as a flag to indicate whether the hike exists.
-        boolean exists = false;
-        System.out.println(getAllHikes(hikeList) + "\n");
-        System.out.println("Enter the name of the hike you want to remove");
-        String hikeToRemove = scanner.nextLine().toLowerCase();
+
         //Creates a blank Hike object called 'remove'
-        Hike remove = new Hike();
+        Hike remove = null;
 
         for (Hike hike : hikeList) {
-            if (hike.getName().toLowerCase().equals(hikeToRemove)) {
-                //If the hike exists then the flag is changed and the hike is assigned to the new 'remove' object
-                exists = true;
+            if (hike.getName().equalsIgnoreCase(hikeToRemove)) {
+                //If the hike exists then the hike is assigned to the blank 'remove' object
                 remove = hike;
             }
         }
 
-        //Removes the found hike from 'hikeList' and returns true. If hike does not exist, the method returns false
-        if (exists) {
-            hikeList.remove(remove);
-            System.out.println("\nThe hike: '" + hikeToRemove + "' was removed from the system");
-            return true;
-        } else {
+        //If hike does not exist, the method returns false
+        if (remove == null) {
             System.out.println("\nCould not remove hike because it does not exist in the system.");
             return false;
         }
+
+        //Removes the found hike from 'hikeList' and returns true.
+        hikeList.remove(remove);
+        System.out.println("\nThe hike: '" + hikeToRemove + "' was removed from the system");
+        return true;
     }
 
 
